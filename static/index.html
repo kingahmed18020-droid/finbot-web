@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>حل الثقافة المالية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117; --s1:#161b22; --s2:#1c2330; --s3:#21262d;
+  --bd:#30363d; --bd2:#484f58;
+  --g:#3fb950; --gd:#1a4a25; --g2:#2ea043;
+  --y:#d29922; --yd:#3d2a00;
+  --r:#f85149; --rd:rgba(248,81,73,.12);
+  --b:#58a6ff; --bd_b:rgba(88,166,255,.2);
+  --tx:#e6edf3; --tx2:#8b949e; --tx3:#6e7681;
+  --rad:12px; --F:'Cairo',system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--tx);font-family:var(--F);
+  min-height:100dvh;display:flex;flex-direction:column;align-items:center;
+  padding:0 16px calc(env(safe-area-inset-bottom,0px)+32px);
+}
+
+/* ══ HEADER ══ */
+.hdr{width:100%;max-width:500px;padding:36px 0 20px;text-align:center}
+.hdr-logo{
+  width:70px;height:70px;border-radius:22px;margin:0 auto 16px;
+  background:linear-gradient(135deg,var(--gd),var(--g));
+  display:flex;align-items:center;justify-content:center;font-size:34px;
+  box-shadow:0 0 40px rgba(63,185,80,.3);
+}
+.hdr h1{font-size:23px;font-weight:900;letter-spacing:-.3px}
+.hdr p{font-size:13px;color:var(--tx2);margin-top:6px;line-height:1.65}
+
+/* ══ TABS ══ */
+.tabs{
+  width:100%;max-width:500px;
+  display:flex;gap:4px;
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--rad);padding:4px;margin-bottom:14px;
+}
+.tab{
+  flex:1;padding:9px 4px;border:none;border-radius:9px;
+  background:transparent;color:var(--tx2);
+  font-family:var(--F);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .18s;
+}
+.tab.active{background:var(--s3);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.tab:hover:not(.active){color:var(--tx)}
+
+/* ══ CARD ══ */
+.card{
+  width:100%;max-width:500px;
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:var(--rad);padding:22px;margin-bottom:14px;
+}
+.card-title{
+  font-size:14px;font-weight:700;color:var(--tx2);
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;gap:7px;
+}
+
+/* ══ FORM ══ */
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--tx2);margin-bottom:7px;text-transform:none}
+.field input{
+  width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:8px;
+  padding:11px 14px;font-family:var(--F);font-size:15px;color:var(--tx);
+  outline:none;transition:border-color .15s;direction:ltr;
+}
+.field input:focus{border-color:var(--g)}
+.field input::placeholder{color:var(--tx3)}
+
+.saved-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--g);background:var(--gd);
+  border-radius:6px;padding:3px 8px;margin-top:6px;
+}
+
+/* ══ BUTTONS ══ */
+.btn{
+  width:100%;padding:13px;border:none;border-radius:9px;
+  font-family:var(--F);font-size:15px;font-weight:700;
+  cursor:pointer;transition:opacity .15s,transform .1s;
+}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-g{background:var(--g);color:#000}
+.btn-g:hover:not(:disabled){background:var(--g2)}
+.btn-r{background:transparent;border:1px solid var(--r);color:var(--r);margin-top:10px}
+.btn-r:hover:not(:disabled){background:var(--rd)}
+.btn-ghost{background:var(--s2);border:1px solid var(--bd);color:var(--tx)}
+.btn-ghost:hover:not(:disabled){border-color:var(--g);color:var(--g)}
+.btn-sm{width:auto;padding:7px 14px;font-size:13px;border-radius:7px}
+
+/* ══ PROGRESS ══ */
+.prog-hdr{
+  font-size:14px;font-weight:700;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;
+}
+.prog-hdr .dot{
+  width:9px;height:9px;border-radius:50%;background:var(--g);
+  animation:pulse 1.4s ease-in-out infinite;flex-shrink:0;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.6)}}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stat{
+  background:var(--s2);border:1px solid var(--bd);
+  border-radius:9px;padding:11px 8px;text-align:center;
+}
+.stat .n{font-size:22px;font-weight:900;color:var(--g);display:block;line-height:1}
+.stat .l{font-size:11px;color:var(--tx2);margin-top:4px}
+
+.log{
+  background:var(--s2);border:1px solid var(--bd);border-radius:9px;
+  padding:12px 14px;max-height:210px;overflow-y:auto;
+  font-size:13px;line-height:1.9;
+  scrollbar-width:thin;scrollbar-color:var(--bd) transparent;
+}
+.log .ll{padding:1px 0}
+.log .ok{color:var(--g)}
+.log .sk{color:var(--tx3)}
+.log .sy{color:var(--y)}
+
+/* ══ RESULT ══ */
+.res-banner{
+  border-radius:9px;padding:14px 16px;margin-bottom:14px;
+  font-size:15px;font-weight:700;display:flex;align-items:center;gap:10px;
+}
+.res-banner.ok  {background:var(--gd);color:var(--g)}
+.res-banner.warn{background:var(--yd);color:var(--y)}
+.res-banner.err {background:var(--rd);color:var(--r)}
+.res-detail{
+  font-size:13px;color:var(--tx2);background:var(--s2);
+  border-radius:9px;padding:12px 14px;margin-bottom:14px;line-height:1.75;
+}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+
+/* ══ SALAWAT ══ */
+.salawat-box{
+  width:100%;max-width:500px;
+  background:linear-gradient(135deg,var(--s1),var(--s2));
+  border:1px solid var(--bd);border-radius:var(--rad);
+  padding:20px;margin-bottom:14px;text-align:center;
+}
+.salawat-box .verse{
+  font-size:14px;color:var(--tx2);line-height:1.9;margin-bottom:14px;
+  font-style:italic;white-space:pre-line;
+}
+.salawat-box .poet{font-size:12px;color:var(--tx3);margin-bottom:16px}
+.salawat-counter{
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  margin-bottom:14px;
+}
+.salawat-counter .cnt{
+  font-size:28px;font-weight:900;
+  background:linear-gradient(135deg,var(--g),#7ee787);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.salawat-counter .lbl{font-size:12px;color:var(--tx2)}
+.btn-salawat{
+  background:linear-gradient(135deg,var(--gd),rgba(63,185,80,.2));
+  border:1px solid var(--g);color:var(--g);
+  padding:12px 24px;border-radius:50px;font-size:14px;font-weight:700;
+  cursor:pointer;transition:all .2s;width:auto;display:inline-block;
+  font-family:var(--F);
+}
+.btn-salawat:hover{background:linear-gradient(135deg,rgba(63,185,80,.3),rgba(63,185,80,.15));transform:scale(1.03)}
+.btn-salawat:active{transform:scale(.97)}
+.salawat-ripple{
+  position:relative;overflow:hidden;
+}
+.salawat-ripple::after{
+  content:'';position:absolute;left:50%;top:50%;width:40px;height:40px;
+  margin:-20px 0 0 -20px;border-radius:50%;
+  background:rgba(63,185,80,.35);
+  transform:scale(0);animation:ripple .5s linear;
+  pointer-events:none;
+}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+
+/* ══ HISTORY ══ */
+.hist-item{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 0;border-bottom:1px solid var(--bd);
+}
+.hist-item:last-child{border-bottom:none}
+.hist-icon{
+  width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
+.hist-icon.ok  {background:var(--gd)}
+.hist-icon.warn{background:var(--yd)}
+.hist-icon.err {background:var(--rd)}
+.hist-info{flex:1;min-width:0}
+.hist-info .ht{font-size:13px;font-weight:700;color:var(--tx)}
+.hist-info .hs{font-size:11px;color:var(--tx2);margin-top:2px}
+.hist-nums{text-align:left;flex-shrink:0}
+.hist-nums .hn{font-size:13px;font-weight:700;color:var(--g)}
+.hist-nums .hl{font-size:10px;color:var(--tx3)}
+.hist-empty{text-align:center;padding:28px 0;color:var(--tx3);font-size:13px}
+
+/* ══ TOAST ══ */
+.toast{
+  position:fixed;bottom:calc(env(safe-area-inset-bottom,0px)+20px);
+  left:50%;transform:translateX(-50%) translateY(8px);
+  background:var(--s1);border:1px solid var(--bd);
+  border-radius:9px;padding:10px 20px;
+  font-size:13px;font-weight:600;pointer-events:none;
+  opacity:0;transition:opacity .25s,transform .25s;white-space:nowrap;z-index:999;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.g{border-color:var(--g);color:var(--g)}
+.toast.r{border-color:var(--r);color:var(--r)}
+.toast.y{border-color:var(--y);color:var(--y)}
+
+/* ══ DIVIDER ══ */
+hr{border:none;border-top:1px solid var(--bd);margin:4px 0 14px}
+
+/* ══ FOOTER ══ */
+footer{font-size:11px;color:var(--tx3);text-align:center;margin-top:6px;line-height:1.7}
+
+/* ══ SHOW/HIDE ══ */
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">📚</div>
+  <h1>حل الثقافة المالية</h1>
+  <p>أدخل بيانات حسابك وسيبدأ الحل أوتوماتيك على السيرفر</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs" id="mainTabs">
+  <button class="tab active" data-tab="solve">🚀 الحل</button>
+  <button class="tab" data-tab="history">📊 السجل</button>
+  <button class="tab" data-tab="salawat">🤍 الصلاة</button>
+</div>
+
+<!-- ══ TAB: SOLVE ══ -->
+<div id="tab-solve">
+
+  <!-- Login Card -->
+  <div class="card" id="loginCard">
+    <div class="card-title">🔑 بيانات الدخول</div>
+    <div class="field">
+      <label>كود الدخول (Login ID)</label>
+      <input type="text" id="usernameInput" maxlength="100" inputmode="text" placeholder="ادخل الكود هنا"
+             autocomplete="username" spellcheck="false" oninput="onUsernameType()">
+      <div class="saved-badge hidden" id="savedBadge">💾 محفوظ من قبل</div>
+    </div>
+    <div class="field" style="margin-bottom:20px">
+      <label>كلمة المرور</label>
+      <input type="password" id="passwordInput" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn btn-g" id="startBtn" onclick="startSolve()">🚀 ابدأ الحل</button>
+  </div>
+
+  <!-- Progress Card -->
+  <div class="card hidden" id="progressCard">
+    <div class="prog-hdr">
+      <div class="dot" id="pDot"></div>
+      <span id="pHeader">⚙️ جاري الحل…</span>
+    </div>
+    <div class="stats-row">
+      <div class="stat"><span class="n" id="sQ">٠</span><div class="l">سؤال</div></div>
+      <div class="stat"><span class="n" id="sA">٠</span><div class="l">نشاط</div></div>
+      <div class="stat"><span class="n" id="sT" style="font-size:16px">٠ث</span><div class="l">وقت</div></div>
+    </div>
+    <div class="log" id="logBox"></div>
+    <button class="btn btn-r" id="stopBtn" onclick="stopSolve()">⛔ إيقاف الحل</button>
+  </div>
+
+  <!-- Result Card -->
+  <div class="card hidden" id="resultCard">
+    <div class="res-banner" id="resBanner"></div>
+    <div class="stats-row" id="resStats"></div>
+    <div class="res-detail hidden" id="resDetail"></div>
+    <button class="btn btn-g" onclick="resetAll()" style="margin-bottom:8px">🔁 تشغيل تاني</button>
+    <button class="btn btn-ghost" onclick="resetAll()">🏠 الرئيسية</button>
+  </div>
+
+</div><!-- /tab-solve -->
+
+<!-- ══ TAB: HISTORY ══ -->
+<div id="tab-history" class="hidden">
+  <div class="card">
+    <div class="card-title">📊 جلساتك السابقة</div>
+    <div id="histContent">
+      <div class="hist-empty">⏳ جاري التحميل…</div>
+    </div>
+  </div>
+  <div class="card" style="padding:14px 22px">
+    <div style="font-size:12px;color:var(--tx2);line-height:1.8">
+      <b style="color:var(--tx)">ملاحظة:</b>
+      السجل بيتحفظ على السيرفر مرتبط بالكود المحفوظ في متصفحك.
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: SALAWAT ══ -->
+<div id="tab-salawat" class="hidden">
+  <div class="salawat-box">
+    <div class="verse" id="verseText">…</div>
+    <div class="poet" id="versePoet">…</div>
+    <div class="salawat-counter">
+      <div>
+        <div class="cnt" id="salawatCount">…</div>
+        <div class="lbl">صلاة على النبي ﷺ</div>
+      </div>
+    </div>
+    <button class="btn-salawat salawat-ripple" id="salawatBtn" onclick="doSalawat(this)">
+      🤍 اللهم صلِّ على سيدنا محمد ﷺ
+    </button>
+  </div>
+  <div class="card" style="padding:14px 22px">
+    <div style="font-size:13px;color:var(--tx2);line-height:1.9;text-align:center">
+      العداد مشترك مع جميع مستخدمي البوت والموقع 🌙
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer>الحل يعمل على السيرفر — تقدر تقفل الصفحة وتعود لاحقًا</footer>
+
+<script>
+// ══ HELPERS ══
+const AR='٠١٢٣٤٥٦٧٨٩';
+const arN=n=>String(n).replace(/[0-9]/g,d=>AR[d]);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function randId(bytes=16){
+  const a=new Uint8Array(bytes);crypto.getRandomValues(a);
+  return Array.from(a,b=>b.toString(16).padStart(2,'0')).join('');
+}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+const VERSES=[
+  {s1:'على قَدرِ أهلِ العَزمِ تأتي العَزائِمُ',s2:'وتأتي على قَدرِ الكِرامِ المَكارِمُ',p:'— المتنبي'},
+  {s1:'إذا غامَرتَ في شَرَفٍ مَرومِ',s2:'فلا تَقنَعْ بما دونَ النُّجومِ',p:'— المتنبي'},
+  {s1:'وما نَيلُ المَطالِبِ بالتَّمنّي',s2:'ولكنْ تُؤخَذُ الدُّنيا غِلابا',p:'— أحمد شوقي'},
+  {s1:'ومَن لا يُحِبُّ صُعودَ الجِبالِ',s2:'يَعِشْ أبَدَ الدَّهرِ بينَ الحُفَرْ',p:'— أبو القاسم الشابي'},
+  {s1:'ولَم أرَ في عُيوبِ الناسِ عَيباً',s2:'كنَقصِ القادِرينَ على التَّمامِ',p:'— المتنبي'},
+];
+
+// ══ CLIENT KEY (محفوظ في localStorage) ══
+function getClientKey(){
+  let k=lsGet('finbot_ck');
+  if(!k||!/^[A-Za-z0-9_-]{8,64}$/.test(k)){k=randId(16);lsSet('finbot_ck',k);}
+  return k;
+}
+const CLIENT_KEY=getClientKey();
+
+// ══ TOAST ══
+let toastTimer;
+function toast(msg,type='g',ms=3000){
+  const t=$('toast');
+  t.textContent=msg;t.className=`toast show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.className='toast',ms);
+}
+
+// ══ TABS ══
+let activeTab='solve';
+function switchTab(name){
+  if(name===activeTab)return;
+  $('tab-'+activeTab).classList.add('hidden');
+  $('tab-'+name).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===name));
+  activeTab=name;
+  if(name==='history') loadHistory();
+  if(name==='salawat') loadSalawat();
+}
+document.querySelectorAll('.tab').forEach(el=>el.addEventListener('click',()=>switchTab(el.dataset.tab)));
+
+// ══ SAVED USERNAME ══
+async function loadSavedUsername(){
+  try{
+    const r=await fetch(`/api/username/${CLIENT_KEY}`);
+    if(!r.ok)return;
+    const d=await r.json();
+    if(d.username&&!$('usernameInput').value){
+      $('usernameInput').value=d.username;
+      $('savedBadge').classList.remove('hidden');
+    }
+  }catch(e){}
+}
+function onUsernameType(){$('savedBadge').classList.add('hidden')}
+
+// ══ SALAWAT ══
+async function loadSalawat(){
+  const v=VERSES[Math.floor(Math.random()*VERSES.length)];
+  $('verseText').textContent=`${v.s1}\n${v.s2}`;
+  $('versePoet').textContent=v.p;
+  try{
+    const r=await fetch('/api/salawat');
+    const d=await r.json();
+    $('salawatCount').textContent=arN(d.count);
+  }catch(e){$('salawatCount').textContent='—'}
+}
+
+let salawatCooldown=false;
+async function doSalawat(btn){
+  if(salawatCooldown)return;
+  salawatCooldown=true;
+  setTimeout(()=>salawatCooldown=false,400);
+  try{
+    const r=await fetch('/api/salawat',{method:'POST'});
+    if(r.status===429){toast('على مهلك شوية 🤍','y',2000);return;}
+    const d=await r.json();
+    $('salawatCount').textContent=arN(d.count);
+    toast('اللهم صلِّ وسلِّم وبارك على سيدنا محمد ﷺ','g',2500);
+    btn.classList.remove('salawat-ripple');void btn.offsetWidth;btn.classList.add('salawat-ripple');
+  }catch(e){}
+}
+
+// ══ HISTORY ══
+const STATUS_MAP={
+  finished:    {icon:'✅',lbl:'اكتمل',       cls:'ok'},
+  stopped:     {icon:'⛔',lbl:'أوقفته',      cls:'warn'},
+  login_failed:{icon:'❌',lbl:'خطأ دخول',    cls:'err'},
+  tests_pending:{icon:'📝',lbl:'اختبار',     cls:'warn'},
+  timeout:     {icon:'⌛',lbl:'انتهى الوقت', cls:'warn'},
+  error:       {icon:'⚠️',lbl:'خطأ',         cls:'err'},
+  stuck:       {icon:'⚠️',lbl:'توقف',        cls:'warn'},
+};
+
+function tsToDate(ts){
+  if(!ts)return'—';
+  return new Date(ts*1000).toLocaleDateString('ar-EG',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+
+async function loadHistory(){
+  const box=$('histContent');
+  box.innerHTML='<div class="hist-empty">⏳ جاري التحميل…</div>';
+  try{
+    const r=await fetch(`/api/history/${CLIENT_KEY}`);
+    if(!r.ok)throw 0;
+    const d=await r.json();
+    const hist=d.history||[];
+    if(!hist.length){box.innerHTML='<div class="hist-empty">لا توجد جلسات سابقة بعد</div>';return;}
+    box.innerHTML=hist.map(h=>{
+      const st=STATUS_MAP[h.status]||STATUS_MAP.error;
+      return `
+      <div class="hist-item">
+        <div class="hist-icon ${st.cls}">${st.icon}</div>
+        <div class="hist-info">
+          <div class="ht">${esc(st.lbl)}</div>
+          <div class="hs">${esc(tsToDate(h.started))} · ${esc(h.elapsed)}</div>
+        </div>
+        <div class="hist-nums">
+          <div class="hn">${arN(h.activities||0)}</div>
+          <div class="hl">نشاط</div>
+          <div class="hn" style="margin-top:2px">${arN(h.questions||0)}</div>
+          <div class="hl">سؤال</div>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){box.innerHTML='<div class="hist-empty">تعذّر تحميل السجل</div>';}
+}
+
+// ══ WEBSOCKET / SOLVE ══
+let ws=null, sessionId=null, jobDone=false, lastLogKey='';
+
+function startSolve(){
+  if(ws)return;
+  const username=$('usernameInput').value.trim();
+  const password=$('passwordInput').value;
+  if(!username||!password){toast('الكود والباسورد مطلوبين!','r');return;}
+
+  jobDone=false;lastLogKey='';
+  sessionId=randId(16);
+  const proto=location.protocol==='https:'?'wss':'ws';
+  const sock=new WebSocket(`${proto}://${location.host}/ws/${sessionId}`);
+  ws=sock;
+
+  sock.onopen=()=>{
+    sock.send(JSON.stringify({username,password,client_key:CLIENT_KEY}));
+    $('passwordInput').value='';          // ما نسيبش الباسورد في الصفحة
+  };
+  sock.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(_){return}handleMsg(m)};
+  sock.onerror=()=>{};
+  sock.onclose=()=>{
+    if(ws!==sock||jobDone)return;         // قفلناه إحنا أو خلص طبيعي
+    ws=null;
+    toast('انقطع الاتصال — لو الحل بدأ فهو مكمل على السيرفر، راجع «السجل» بعد شوية','y',7000);
+    resetUI();
+  };
+
+  $('startBtn').disabled=true;
+  $('loginCard').classList.add('hidden');
+  $('progressCard').classList.remove('hidden');
+  $('resultCard').classList.add('hidden');
+  $('logBox').textContent='';
+  $('stopBtn').disabled=false;
+}
+
+function renderLog(lines){
+  const key=lines.join('\n');
+  if(key===lastLogKey)return;
+  lastLogKey=key;
+  const box=$('logBox');
+  box.textContent='';
+  for(const l of lines){
+    const d=document.createElement('div');
+    d.className='ll '+(l.startsWith('✅')?'ok':l.startsWith('⏭')?'sk':'sy');
+    d.textContent=l;
+    box.appendChild(d);
+  }
+  box.scrollTop=box.scrollHeight;
+}
+
+function handleMsg(msg){
+  if(msg.type==='progress'){
+    $('pHeader').textContent=msg.header||'⚙️ جاري الحل…';
+    $('sQ').textContent=arN(msg.questions||0);
+    $('sA').textContent=arN(msg.activities||0);
+    $('sT').textContent=msg.elapsed||'٠ث';
+    renderLog(msg.lines||[]);
+    $('stopBtn').style.display=msg.show_stop?'':'none';
+  }
+  else if(msg.type==='done') showResult(msg);
+  else if(msg.type==='error'){
+    toast(msg.msg||'حصل خطأ','r',6000);
+    jobDone=true;
+    if(ws){const s=ws;ws=null;s.close();}
+    resetUI();
+  }
+}
+
+function showResult(msg){
+  jobDone=true;
+  $('progressCard').classList.add('hidden');
+  $('resultCard').classList.remove('hidden');
+  const s=msg.summary||{};
+  const SM={
+    finished:    {icon:'🎉',txt:'اكتملت الأنشطة المتاحة',  cls:'ok'},
+    stopped:     {icon:'⛔',txt:'تم إيقاف الحل',           cls:'warn'},
+    login_failed:{icon:'❌',txt:'فشل تسجيل الدخول',        cls:'err'},
+    tests_pending:{icon:'📝',txt:'وقفت عند اختبار',        cls:'warn'},
+    timeout:     {icon:'⌛',txt:'انتهى الوقت المسموح',     cls:'warn'},
+    stuck:       {icon:'⚠️',txt:'وقف عند سؤال بدون إجابة', cls:'warn'},
+    error:       {icon:'⚠️',txt:'حدث خطأ',                 cls:'err'},
+  };
+  const st=SM[msg.status]||SM.error;
+  const banner=$('resBanner');
+  banner.className=`res-banner ${st.cls}`;
+  banner.textContent=`${st.icon} ${st.txt}`;
+  $('resStats').innerHTML=`
+    <div class="stat"><span class="n">${arN(s.questions||0)}</span><div class="l">سؤال</div></div>
+    <div class="stat"><span class="n">${arN(s.activities||0)}</span><div class="l">نشاط</div></div>
+    <div class="stat"><span class="n" style="font-size:14px">${esc(s.elapsed||'—')}</span><div class="l">وقت</div></div>`;
+  const lines=[];
+  if(s.last&&s.last!=='—') lines.push(`📍 آخر نشاط: ${s.last}`);
+  if(msg.status==='tests_pending'&&msg.test){
+    lines.push(`📝 الاختبار: ${msg.test}`);
+    lines.push('حلّه يدويًا ثم اضغط «تشغيل تاني».');
+  }
+  if(msg.status==='login_failed') lines.push('تحقق من الكود وكلمة المرور.');
+  if(msg.error&&!['login_failed','finished'].includes(msg.status)) lines.push(`تفاصيل: ${msg.error}`);
+  const det=$('resDetail');
+  det.textContent='';
+  lines.forEach((l,i)=>{
+    if(i)det.appendChild(document.createElement('br'));
+    det.appendChild(document.createTextNode(l));     // textContent-safe
+  });
+  det.classList.toggle('hidden',!lines.length);
+  if(ws){const s2=ws;ws=null;s2.close();}
+}
+
+function stopSolve(){
+  if(!sessionId)return;
+  $('stopBtn').disabled=true;
+  fetch(`/cancel/${sessionId}`,{method:'POST'})
+    .then(r=>r.json())
+    .then(d=>{if(d.ok)toast('طلب الإيقاف اتبعت…','y');})
+    .catch(()=>{$('stopBtn').disabled=false;toast('تعذّر إرسال الإيقاف','r');});
+}
+
+function resetUI(){
+  $('startBtn').disabled=false;
+  $('loginCard').classList.remove('hidden');
+  $('progressCard').classList.add('hidden');
+  $('resultCard').classList.add('hidden');
+}
+
+function resetAll(){
+  resetUI();
+  $('passwordInput').value='';
+  $('logBox').textContent='';
+  $('stopBtn').disabled=false;
+  if(ws){const s=ws;ws=null;s.close();}
+  sessionId=null;
+}
+
+// Enter key
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&activeTab==='solve'&&!$('loginCard').classList.contains('hidden'))
+    startSolve();
+});
+
+// ══ INIT ══
+loadSavedUsername();
+</script>
+</body>
+</html>
