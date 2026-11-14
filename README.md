@@ -53,6 +53,15 @@ python main.py
 - `ANSWERS_FILE=answers.txt`
 - `WS_RATE_LIMIT=6`
 - `PROFILE_SLEEPS=0`
+- `HEADLESS=true`
+- `MAX_STEPS=5000`
+- `RETRIES=2`
+- `BLOCK_ASSETS=false`
+- `WAIT_SHORT=150`
+- `WAIT_MEDIUM=250`
+- `WAIT_AFTER_ANSWER=250`
+- `WAIT_QUIZ=600`
+- `PROXY_SERVER=` و`PROXY_USERNAME=` و`PROXY_PASSWORD=` — اختيارية فقط إذا كان الموقع يحتاج Proxy.
 
 ### اختيارية
 
@@ -61,3 +70,5 @@ python main.py
 > نظام ملفات Railway للحاوية مؤقت. لإبقاء `bot.db`، أضف Volume mount path باسم `/data` واترك `DB_PATH=/data/bot.db`.
 
 > لا تضع كلمات مرور المستخدمين أو أي مفاتيح سرية في GitHub أو في `.env.example`. بيانات الدخول التي يرسلها المستخدمون تمر إلى البوت وقت التشغيل فقط.
+
+> `BOT_TOKEN` و`OWNER_CHAT_ID` مطلوبان فقط إذا شغّلت `bot.py` كخدمة Telegram منفصلة. خدمة Railway الحالية تشغّل واجهة الويب (`main.py`) ولا تحتاجهما.

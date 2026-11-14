@@ -1,0 +1,5 @@
+python-telegram-bot==22.8
+# لازم يطابق نسخة صورة Docker في الـ Dockerfile (v1.48.0) وإلا المتصفح مش هيتلاقى
+playwright==1.48.0
+python-dotenv>=1.0
+Pillow>=10.0

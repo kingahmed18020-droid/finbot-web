@@ -1,0 +1,15 @@
+.env
+.git
+.gitignore
+.venv
+__pycache__
+*.pyc
+.pytest_cache
+bot.db
+artifacts
+tests
+README.md
+SPRIX_Learning_Platform_Documentation.md
+make_assets.py
+assets/fonts
+assets/wallpaper.png
