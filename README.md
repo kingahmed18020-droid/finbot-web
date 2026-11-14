@@ -49,7 +49,7 @@ python main.py
 - `MAX_JOBS=1` — بداية آمنة للذاكرة؛ ارفعها فقط بعد اختبار استهلاك Playwright.
 - `MAX_QUEUE=10`
 - `JOB_TIMEOUT_MIN=240`
-- `DB_PATH=/app/finbot_v4_0/bot.db`
+- `DB_PATH=/data/bot.db` — مع إضافة Railway Volume على المسار `/data` إذا أردت الاحتفاظ بالسجل والعداد بعد إعادة التشغيل.
 - `ANSWERS_FILE=answers.txt`
 - `WS_RATE_LIMIT=6`
 - `PROFILE_SLEEPS=0`
@@ -57,5 +57,7 @@ python main.py
 ### اختيارية
 
 - `ALLOWED_ORIGINS=https://your-domain.example` — دومينات إضافية مسموحة للـ WebSocket/CORS. اتركها فارغة إذا كانت الواجهة من نفس الدومين.
+
+> نظام ملفات Railway للحاوية مؤقت. لإبقاء `bot.db`، أضف Volume mount path باسم `/data` واترك `DB_PATH=/data/bot.db`.
 
 > لا تضع كلمات مرور المستخدمين أو أي مفاتيح سرية في GitHub أو في `.env.example`. بيانات الدخول التي يرسلها المستخدمون تمر إلى البوت وقت التشغيل فقط.
